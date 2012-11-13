@@ -1,6 +1,6 @@
 
 # Variable contains directories which contains source files
-SOURCEDIRS=app
+SOURCEDIRS=app data
 
 SOURCE=${foreach var,${SOURCEDIRS},${wildcard ${var}/*.c}}
 HEADER=${foreach var,${SOURCEDIRS},${wildcard ${var}/*.h}}
@@ -13,6 +13,7 @@ CFLAGS=-std=c99
 
 all: $(BIN)
 
+#cleanin rule
 clean:
 	rm -f ${OBJ} $(BIN)
 
