@@ -11,7 +11,7 @@ LIBS      = -lGL -lGLEW -lSDL
 BIN       = jakokdybyholub.bin
 CFLAGS=-std=c99
 
-#jakokdybyholub all rule
+#everything
 all: $(BIN)
 
 #cleanin rule
