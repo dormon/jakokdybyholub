@@ -18,7 +18,11 @@ all: $(BIN)
 clean:
 	rm -f ${OBJ} $(BIN)
 
+<<<<<<< HEAD
 #binary rule dormon
+=======
+#bin rule
+>>>>>>> 2978409220c8eefce0e802d726a192fa6530d465
 ${BIN}: ${OBJ}
 	gcc ${OBJ} -o ${BIN} $(LIBS) 
 
