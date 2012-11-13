@@ -20,6 +20,7 @@ clean:
 ${BIN}: ${OBJ}
 	gcc ${OBJ} -o ${BIN} $(LIBS) 
 
+#compilation rules
 %.o: %.c %.h
 	gcc -o $@ -c $< -std=c99
 
