@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include"MyShader.hpp"
+#include"CWindow.hpp"
 
 int SpherePlane(float*Sphere,float*Plane){
 	//positive radius of sphere
@@ -33,7 +35,32 @@ int SphereLine(float*S,float*A,float*B){
 int SphereSegment(float*S,float*A,float*B){
 }
 
+CWindow*Window;
+CWindow*B;
+
+void Idle(){
+	glClearColor(1,1,1,1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	Window->Swap();
+}
+
 int main(){
-	fprintf(stdout,"Hello, world!\n");
+	Window=new CWindow(100,100,false,Idle,NULL);
+	Window->SetMouseWarp(true);
+	Window->MainLoop();
+	delete Window;
+	/*CShaderProgram*Program;
+	CShader*Vertex,*Fragment;
+	Vertex=new CShader("vertex.vp");*/
+	//delete Vertex;
+	/*try{
+		Vertex=new CShader("vertex.vp");
+		//Fragment=new CShader("fragment.fp");
+		//Program=new CShaderProgram(2,Vertex,Fragment);
+	}catch(std::string&e){
+		std::cerr<<e<<std::endl;
+	}
+	delete Vertex;*/
+	//fprintf(stdout,"Hello, world!\n");
 	return EXIT_SUCCESS;
 }

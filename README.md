@@ -1,4 +1,4 @@
 jakokdybyholub
 ==============
 
-c,OpenGL,3D,procedural
+c++,OpenGL,3D,procedural

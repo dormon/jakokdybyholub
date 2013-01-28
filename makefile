@@ -1,7 +1,6 @@
-
 # Variable contains directories which contains source files
 # dont forget / !!!
-SOURCEDIRS=app/ data/
+SOURCEDIRS=app/ data/ shader/ standard/ window/
 
 DIR0:=${SOURCEDIRS}
 DIRA0:=${foreach var,${DIR0},${dir ${wildcard ${var}*/}}} ${DIR0}
@@ -21,24 +20,26 @@ INCLUDEDIRS=${foreach var,${SRCDIR},-I ${var}}
 
 LIBS      = -lGL -lGLEW -lSDL
 BIN       = jakokdybyholub.bin
-CFLAGS=-std=c99 ${INCLUDEDIRS}
+CFLAGS    = -std=c++98 ${INCLUDEDIRS}
+CPP       = g++
+
+all:${BIN}
 
 #everything
-all: $(BIN)
+${BIN}: ${OBJ}
+	${CPP} ${OBJ} -o ${BIN} ${LIBS} -g
+
+
+#compilation rules
+%.o: %.cpp %.hpp
+	${CPP} -o $@ ${CFLAGS} -c $< -g
 
 #cleanin rule
 clean:
 	rm -f ${OBJ} $(BIN)
 
-#bin rule
-${BIN}: ${OBJ}
-	g++ ${OBJ} -o ${BIN} $(LIBS) 
-
-#compilation rules
-%.o: %.cpp %.hpp
-	gcc -o $@ -c $<
-
-
 run: ${BIN}
 	./${BIN}
 
+mem: ${BIN}
+	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --suppressions=file.supp ./${BIN}
