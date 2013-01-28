@@ -14,9 +14,9 @@ DIRA3:=${foreach var,${DIR3},${dir ${wildcard ${var}*/}}} ${DIR3}
 DIR4:=${sort ${DIRA3}}
 SRCDIR=${DIR4}
 
-SOURCE=${foreach var,${SRCDIR},${wildcard ${var}/*.c}}
-HEADER=${foreach var,${SRCDIR},${wildcard ${var}/*.h}}
-OBJ=${SOURCE:%.c=%.o}
+SOURCE=${foreach var,${SRCDIR},${wildcard ${var}/*.cpp}}
+HEADER=${foreach var,${SRCDIR},${wildcard ${var}/*.hpp}}
+OBJ=${SOURCE:%.cpp=%.o}
 INCLUDEDIRS=${foreach var,${SRCDIR},-I ${var}}
 
 LIBS      = -lGL -lGLEW -lSDL
@@ -32,10 +32,10 @@ clean:
 
 #bin rule
 ${BIN}: ${OBJ}
-	gcc ${OBJ} -o ${BIN} $(LIBS) 
+	g++ ${OBJ} -o ${BIN} $(LIBS) 
 
 #compilation rules
-%.o: %.c %.h
+%.o: %.cpp %.hpp
 	gcc -o $@ -c $<
 
 
