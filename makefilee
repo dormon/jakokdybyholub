@@ -1,11 +1,7 @@
 # Variable contains directories which contains source files
 # dont forget / !!!
 SOURCEDIRS=app/ data/ shader/ standard/ window/ gpu/
-<<<<<<< HEAD
-dormon
-=======
 jakokdybyholub
->>>>>>> 6218f8ba3b36e0779d7c9abfc95f5016270c2471
 DIR0:=${SOURCEDIRS}
 DIRA0:=${foreach var,${DIR0},${dir ${wildcard ${var}*/}}} ${DIR0}
 DIR1:=${sort ${DIRA0}}
