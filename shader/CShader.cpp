@@ -34,7 +34,8 @@ void CShader::CompileShader(){
 	GLchar*ptr[1]={(GLchar*)this->Text.data()};//retype
 	glShaderSource(this->ShaderID,1,(const GLchar**)ptr,NULL);//load shader text
 	glCompileShader(this->ShaderID);//compile shader
-	std::cout<<GetShaderInfo(this->ShaderID)<<std::endl;//print out log
+	std::string Log=GetShaderInfo(this->ShaderID);
+	if(!Log.empty())std::cout<<Log<<std::endl;//print out log
 	GLint Status;//status of compilation
 	glGetShaderiv(this->ShaderID,GL_COMPILE_STATUS,&Status);//get status
 	if(Status==GL_FALSE)//something is wrong

@@ -3,6 +3,7 @@
 std::string GetShaderInfo(GLuint ID){
 	int Len=0;//length of message
 	glGetShaderiv(ID,GL_INFO_LOG_LENGTH,&Len);//gets length of message
+	if(Len<=1)return"";
 	std::string Info(Len,' ');//create string of Len length
 	glGetShaderInfoLog(ID,Len,NULL,&Info[0]);//get message
 	return Info;//return message
