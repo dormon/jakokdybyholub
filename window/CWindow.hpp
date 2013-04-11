@@ -1,6 +1,7 @@
 #ifndef _CWINDOW_HPP_
 #define _CWINDOW_HPP_
 
+#include<map>
 #include<SDL/SDL.h>
 
 class CWindow
@@ -28,6 +29,8 @@ class CWindow
 		Uint32 LastIdleTime;//last idle time
 		Uint32 CurrentMouseTime;//current mouse time
 		Uint32 CurrentIdleTime;//current idle time
+		std::map<SDLKey,int>MapKeyDown;
+		std::map<SDLKey,int>MapKeyOffOn;
 	public:
 		CWindow(unsigned Width,unsigned Height,bool FullScreen,
 				void(*Idle)(),void(*Mouse)());
@@ -42,6 +45,8 @@ class CWindow
 		int*GetDeltaMousePosition();
 		void SetMouseWarp(bool WrapMouse);
 		unsigned*GetWindowSize();
+		int IsKeyDown(int Key);
+		int IsKeyOn(int Key);
 		int IsKeyDown(char Key);
 		int IsKeyOn(char Key);
 		int IsLeftDown();
@@ -50,6 +55,12 @@ class CWindow
 		int IsRightOn();
 		int IsMiddleDown();
 		int IsMiddleOn();
+		void SetKeyOn(int k){
+			this->KeyOffOn[k]=1;
+			if(!this->MapKeyOffOn.count((SDLKey)k))
+				this->MapKeyOffOn.insert(std::pair<SDLKey,int>((SDLKey)k,0));
+			this->MapKeyOffOn[(SDLKey)k]=1;
+		}
 
 };
 

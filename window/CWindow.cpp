@@ -1,17 +1,22 @@
 #include"CWindow.hpp"
 
+#include<iostream>
+
 CWindow::CWindow(
 		unsigned Width,
 		unsigned Height,
 		bool FullScreen,
 		void(*Idle)(),
 		void(*Mouse)()){
+	this->MapKeyDown.clear();
+	this->MapKeyOffOn.clear();
 	this->Idle=Idle;//set idle function
 	this->Mouse=Mouse;//set mouse function
 	this->WindowSize[0]=Width;//width of window
 	this->WindowSize[1]=Height;//height of window
 	this->IsFullScreen=FullScreen;//set fullscreen flag
-	SDL_Init(SDL_INIT_VIDEO);//initialise video
+	SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER);//initialise video
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE,8);
 	if(this->IsFullScreen)//is fullscreen?
 		SDL_SetVideoMode(//set video
 				this->WindowSize[0],//width
@@ -29,7 +34,6 @@ CWindow::CWindow(
 				SDL_HWSURFACE|//hardware surface
 				SDL_DOUBLEBUF|//double buffering
 				SDL_OPENGL);//OpenGL
-
 	for(int i=0;i<256;++i){//loop over keys
 		this->KeyDown[i]=0;//key is not down
 		this->KeyOffOn[i]=0;//key is off
@@ -57,10 +61,23 @@ void CWindow::MainLoop(){
 					this->Running=false;//stop running
 					break;//break quit case
 				case SDL_KEYDOWN://key down
+					if(!this->MapKeyDown.count(E.key.keysym.sym))
+						this->MapKeyDown.insert(std::pair<SDLKey,int>(E.key.keysym.sym,0));
+					if(!this->MapKeyOffOn.count(E.key.keysym.sym))
+						this->MapKeyOffOn.insert(std::pair<SDLKey,int>(E.key.keysym.sym,0));
+					this->MapKeyDown[E.key.keysym.sym]=1;
+					this->MapKeyOffOn[E.key.keysym.sym]^=1;
+					if(E.key.keysym.sym==SDLK_1)exit(0);
+					
 					this->KeyDown[E.key.keysym.sym%256]=1;//key is down
 					this->KeyOffOn[E.key.keysym.sym%256]^=1;//switch key state
 					break;//break key down case
 				case SDL_KEYUP://key up
+					if(!this->MapKeyDown.count(E.key.keysym.sym))
+						this->MapKeyDown.insert(std::pair<SDLKey,int>(E.key.keysym.sym,0));
+					if(!this->MapKeyOffOn.count(E.key.keysym.sym))
+						this->MapKeyOffOn.insert(std::pair<SDLKey,int>(E.key.keysym.sym,0));
+					this->MapKeyDown[E.key.keysym.sym]=0;
 					this->KeyDown[E.key.keysym.sym%256]=0;//key is not down
 					break;//break key up case
 				case SDL_MOUSEMOTION://mouse motion
@@ -155,11 +172,23 @@ unsigned*CWindow::GetWindowSize(){
 }
 
 int CWindow::IsKeyDown(char Key){
-	return this->KeyDown[Key];
+	return this->IsKeyDown((int)Key);
 }
 
 int CWindow::IsKeyOn(char Key){
-	return this->KeyOffOn[Key];
+	return this->IsKeyOn((int)Key);
+}
+
+int CWindow::IsKeyDown(int Key){
+	if(!this->MapKeyDown.count((SDLKey)Key))
+		this->MapKeyDown.insert(std::pair<SDLKey,int>((SDLKey)Key,0));
+	return this->MapKeyDown[(SDLKey)Key];
+}
+
+int CWindow::IsKeyOn(int Key){
+	if(!this->MapKeyOffOn.count((SDLKey)Key))
+		this->MapKeyOffOn.insert(std::pair<SDLKey,int>((SDLKey)Key,0));
+	return this->MapKeyOffOn[(SDLKey)Key];
 }
 
 int CWindow::IsLeftDown(){
